@@ -1,0 +1,7 @@
+FROM bitnami/spark:3.5.1
+USER root
+RUN pip install --no-cache-dir pyspark py4j cassandra-driver
+COPY spark_streaming /opt/spark/spark_streaming
+COPY constants /opt/spark/constants
+ENV PYTHONPATH="/opt/spark/constants:/opt/spark/spark_streaming:${PYTHONPATH}"
+USER 1001
