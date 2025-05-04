@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+export PYTHONPATH="${PYTHONPATH}:/opt/airflow/constants:/opt/airflow/pipelines"
 
 if [ -f "/opt/airflow/requirements.txt" ]; then
   python -m pip install --upgrade pip
