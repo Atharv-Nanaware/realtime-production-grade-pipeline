@@ -1,0 +1,37 @@
+global:
+  scrape_interval: 10s
+  scrape_timeout: 10s
+  evaluation_interval: 10s
+
+rule_files: ["rules/*.yml"]
+
+
+
+alerting:
+  alertmanagers:
+    - timeout: "10s"
+      scheme: http
+      static_configs:
+        - targets: ["alertmanager:9093"]
+
+scrape_configs:
+  - job_name: kafka-controller
+    scrape_interval: 10s
+    scrape_timeout: 10s
+    scheme: http
+    static_configs:
+      - targets: ["kafka-exporter:9101"]
+  - job_name: spark-metrics
+    scrape_interval: 10s
+    scrape_timeout: 10s
+    scheme: http
+    static_configs:
+      - targets: ["spark-master:9094"]
+        labels:
+          service: 'spark-master'
+      - targets: ["Project1-spark-worker-1-1:9095"]
+        labels:
+          service: 'spark-worker-1'
+      - targets: ["Project1-spark-worker-2-1:9096"]
+        labels:
+          service: 'spark-worker-2'

@@ -1,0 +1,40 @@
+groups:
+  - name: Kafka Alerts
+    rules:
+      - alert: KafkaHighRequestLatency
+        expr: kafka_request_latency_ms > 100
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Request latency in Kafka"
+          description: "Request latency is above 100ms for more than 1m"
+
+  - name: Spark Alerts
+    rules:
+      - alert: SparkHighMemoryUsage
+        expr: jvm_memory_bytes_used{service=~"spark.*"} / jvm_memory_bytes_max{service=~"spark.*"} > 0.85
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Memory Usage in Spark"
+          description: "Spark JVM memory usage is above 85% for more than 2m on {{ $labels.service }}"
+
+      - alert: SparkHighGCTime
+        expr: rate(jvm_gc_collection_seconds_sum{service=~"spark.*"}[1m]) > 0.10
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Garbage Collection Time in Spark"
+          description: "Spark is spending more than 10% of time in GC on {{ $labels.service }}"
+
+      - alert: SparkHighCPUUsage
+        expr: rate(process_cpu_seconds_total{service=~"spark.*"}[1m]) > 0.8
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU Usage in Spark"
+          description: "Spark service {{ $labels.service }} has high CPU utilization for more than 2m"

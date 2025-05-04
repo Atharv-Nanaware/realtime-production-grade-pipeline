@@ -1,0 +1,23 @@
+---
+hostPort: broker:9999
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+ssl: false
+whitelistObjectNames:
+  - kafka.server:*
+  - kafka.controller:*
+  - kafka.network:*
+  - kafka.log:*
+  - java.lang:*
+rules:
+  - pattern: "kafka.server<type=(.+), name=(.+)><>Value"
+    name: "kafka_server_$1_$2"
+  - pattern: "kafka.controller<type=(.+), name=(.+)><>Value"
+    name: "kafka_controller_$1_$2"
+  - pattern: "kafka.network<type=(.+), name=(.+)><>Value"
+    name: "kafka_network_$1_$2"
+  - pattern: "kafka.log<type=(.+), name=(.+)><>Value"
+    name: "kafka_log_$1_$2"
+  - pattern: "java.lang<type=(.+), name=(.+)><>Value"
+    name: "java_lang_$1_$2"
+  - pattern: ".*"
